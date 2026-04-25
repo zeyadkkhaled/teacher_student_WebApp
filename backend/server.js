@@ -11,18 +11,14 @@ app.use(express.json());
 app.use(cors());
 
 const db = createPool({
-    // Use the exact keys from your docker-compose.yml environment section
     host: process.env.MYSQL_HOST || 'db',
     user: process.env.MYSQL_USER || 'root',
     password: process.env.MYSQL_PASSWORD || 'mysql123',
     database: process.env.MYSQL_DATABASE || 'school',
     connectionLimit: 10,
-    // REMOVE or comment out SSL for a local Docker setup unless 
-    // you have specifically configured certificates in the DB container
-    /* ssl: {
+    ssl: {
         rejectUnauthorized: false
     } 
-    */
 });
 
 process.on('unhandledRejection', (reason, promise) => {
@@ -161,6 +157,7 @@ app.delete('/teacher/:id', async (req, res) => {
     }
 });
 
-app.listen(3500, () => {
-    console.log("listening on Port 3500");
+const port = process.env.PORT || 3500;
+app.listen(port, () => {
+    console.log(`listening on Port ${port}`);
 });
